@@ -12,5 +12,9 @@ bool GameScene::init()
 		return false;
 	}
 
+	PlayerLayer* pPlayerLayer = PlayerLayer::create();
+	pPlayerLayer->PlayerLayer::init();
+	this->addChild(pPlayerLayer);
+
 	return true;
 }

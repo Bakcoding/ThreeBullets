@@ -1,6 +1,5 @@
 #include "TitleScene.h"
 
-
 TitleScene* TitleScene::createScene() {
 	return create();	
 }
@@ -44,8 +43,11 @@ void TitleScene::initButton()
 	
 	// 시작 버튼 상호작용
 	MenuItemImage* start = MenuItemImage::create(
+		// 파일 경로 Resources 폴더
+		// 이미지 두 개 : 일반상태와 클릭시
 		"Title/StartButtonNormal.png",
 		"Title/StartButtonSelect.png",
+		// 입력 처리하는 콜백 함수
 		CC_CALLBACK_1(TitleScene::titlesceneCallBack, this));
 
 	// 종료 버튼 상호작용
@@ -77,12 +79,14 @@ void TitleScene::titlesceneCallBack(Ref* _sender)
 	// MenuItem 만든 객체 태그로 구분
 	switch (((MenuItemImage*)_sender)->getTag())
 	{
-	// 씬전환
+	// 시작
 	case ETag::kStart:
+		// 씬 전환
 		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, GameScene::create()));
 		break;
 	// 종료		
 	case ETag::kExit:
+		// 프로그램 종료
 		Director::getInstance()->end();
 		break;
 	}

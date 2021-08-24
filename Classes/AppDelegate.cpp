@@ -39,9 +39,9 @@ static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 // 내 폰에 맞춰서 6.4인치, 18.5:9, 2960 x 1440
-float widthRate = 18.5f;
-float heightRate = 9.0f;
-static cocos2d::Size mySize = cocos2d::Size(heightRate * 50, widthRate * 50);
+float widthRate = 9.0f;
+float heightRate = 18.5f;
+static cocos2d::Size mySize = cocos2d::Size(widthRate * 50, heightRate * 50);
 
 AppDelegate::AppDelegate()
 {
@@ -76,6 +76,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
+        // createWithRect("프로그램 이름", 크기(전달인자에 내가만든 사이즈를 넣어준다.)) 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glview = GLViewImpl::createWithRect("ThreeBullets", cocos2d::Rect(0, 0, mySize.width, mySize.height));
 #else
