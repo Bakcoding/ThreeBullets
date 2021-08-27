@@ -1,23 +1,32 @@
-#ifndef _TITLE_SCENE_
-#define _TITLE_SCENE_
+#ifndef _TITLE_SCENE_H
+#define _TITLE_SCENE_H
 #include "cocos2d.h"
+#include "ButtonNode.h"
 #include "GameScene.h"
 USING_NS_CC;
 
 class TitleScene : public Scene
 {
-public:
-	// 차일드에 태그를 붙이는 용도
-	enum ETag {kStart = 0, kExit = 1};
+private:
+	Size visibleSize;
+	string strStartButton[4];
+	string strExitButton[4];
 
-	static TitleScene* createScene();
+	ButtonNode* pStartButton;
+	ButtonNode* pExitButton;
+
+public:
+	TitleScene();
 	CREATE_FUNC(TitleScene);
 	virtual bool init() override;
 
-	void initTitle();
-	void initButton();
+	void titleImageInit();
+	void buttonInit();
 
-	void titlesceneCallBack(Ref* _sender);
+	void nextScene(Ref* _sender, Widget::TouchEventType _type);
+	void exitGame(Ref* _sender, Widget::TouchEventType _type);
 };
+
+
 
 #endif

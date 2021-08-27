@@ -1,8 +1,10 @@
 #include "TitleScene.h"
+#include <iostream>
 
-TitleScene* TitleScene::createScene() {
-	return create();	
-}
+TitleScene::TitleScene() : visibleSize(Director::getInstance()->getVisibleSize()), 
+strStartButton{ "Button/StartButtonNormal.png" ,  "Button/StartButtonSelect.png" , "Button/StartButtonSelect.png"},
+strExitButton{ "Button/ExitButtonNormal.png", "Button/ExitButtonSelect.png", "Button/ExitButtonSelect.png" }, 
+pStartButton(NULL), pExitButton(NULL) {}
 
 bool TitleScene::init()
 {
@@ -11,83 +13,50 @@ bool TitleScene::init()
 		return false;
 	}
 
-	initTitle();
-	initButton();
+	titleImageInit();
+	buttonInit();
 
+	//Button* button = Button::create(strStartButton[0], strStartButton[1], strStartButton[2]);
+	//button->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
+	//button->addTouchEventListener(CC_CALLBACK_2(TitleScene::nextScene, this));
+	//this->addChild(button);
 
 	return true;
 }
 
-// 게임 타이틀 로고
-void TitleScene::initTitle()
+void TitleScene::titleImageInit()
 {
-	// 화면의 크기를 가져옴
-	Size winSize = Director::getInstance()->getWinSize();
-	float positonX = winSize.width * 0.5f;
-	float positionY = winSize.height * 0.7f;
-
-	Sprite* title = Sprite::create("Title/Logo.png");
-	// 위치 조정
-	title->setPosition(positonX, positionY);
-	// 이미지 크기 조정
-	title->setScale(1.5f);
-	this->addChild(title);
+	Sprite* titleImage = Sprite::create("Title/Logo.png");
+	titleImage->setPosition(visibleSize.width * 0.5f, visibleSize.height * 0.7f);
+	this->addChild(titleImage);
 }
 
-// 시작 버튼
-void TitleScene::initButton()
+void TitleScene::buttonInit()
 {
-	Size winSize = Director::getInstance()->getWinSize();
-	float positionX = winSize.width * 0.5f;
-	float positionY = winSize.height * 0.3f;
-	
-	// 시작 버튼 상호작용
-	MenuItemImage* start = MenuItemImage::create(
-		// 파일 경로 Resources 폴더
-		// 이미지 두 개 : 일반상태와 클릭시
-		"Title/StartButtonNormal.png",
-		"Title/StartButtonSelect.png",
-		// 입력 처리하는 콜백 함수
-		CC_CALLBACK_1(TitleScene::titlesceneCallBack, this));
+	Vec2 newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.3f);
+	pStartButton = ButtonNode::create();
+	pStartButton->init(strStartButton, CC_CALLBACK_2(TitleScene::nextScene, this), newPos);
 
-	// 종료 버튼 상호작용
-	MenuItemImage* exit = MenuItemImage::create(
-		"Title/ExitButtonNormal.png",
-		"Title/ExitButtonSelect.png",
-		CC_CALLBACK_1(TitleScene::titlesceneCallBack, this));
+	pExitButton = ButtonNode::create();
+	pExitButton->init(strExitButton, CC_CALLBACK_2(TitleScene::exitGame, this), newPos);
+	pExitButton->alignmentVertical(pStartButton, 50.0f);
 
-	// 이미지 크기 조정
-	start->setScale(2.0f);
-	exit->setScale(2.0f);
-
-	// 버튼 위치, Menu로 만들어서 묶어서 관리, 마지막 전달인자 NULL로 끝 표시
-	Menu* menu = Menu::create(start, exit, NULL);
-	// 메뉴로 만든 객체 수직 정렬
-	menu->alignItemsVertically();
-	// 위치 조정
-	menu->setPosition(positionX, positionY);
-	// 객체 태그 설정
-	start->setTag(ETag::kStart);
-	exit->setTag(ETag::kExit);
-
-	this->addChild(menu);
+	this->addChild(pStartButton);
+	this->addChild(pExitButton);
 }
 
-// 버튼 구분
-void TitleScene::titlesceneCallBack(Ref* _sender)
+void TitleScene::nextScene(Ref* _sender, Widget::TouchEventType _type)
 {
-	// MenuItem 만든 객체 태그로 구분
-	switch (((MenuItemImage*)_sender)->getTag())
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, GameScene::create()));
+}
+void TitleScene::exitGame(Ref* _sender, Widget::TouchEventType _type)
+{
+	switch (_type)
 	{
-	// 시작
-	case ETag::kStart:
-		// 씬 전환
-		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, GameScene::create()));
-		break;
-	// 종료		
-	case ETag::kExit:
-		// 프로그램 종료
+	case ui::Widget::TouchEventType::BEGAN:
 		Director::getInstance()->end();
+		break;
+	default:
 		break;
 	}
 }
