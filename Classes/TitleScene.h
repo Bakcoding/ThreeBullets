@@ -1,7 +1,7 @@
 #ifndef _TITLE_SCENE_H
 #define _TITLE_SCENE_H
 #include "cocos2d.h"
-#include "ButtonNode.h"
+#include "CreateButton.h"
 #include "GameScene.h"
 USING_NS_CC;
 
@@ -12,8 +12,8 @@ private:
 	string strStartButton[4];
 	string strExitButton[4];
 
-	ButtonNode* pStartButton;
-	ButtonNode* pExitButton;
+	CreateButton* pStartButton;
+	CreateButton* pExitButton;
 
 public:
 	TitleScene();

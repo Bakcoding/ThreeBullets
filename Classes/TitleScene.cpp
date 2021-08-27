@@ -16,10 +16,6 @@ bool TitleScene::init()
 	titleImageInit();
 	buttonInit();
 
-	//Button* button = Button::create(strStartButton[0], strStartButton[1], strStartButton[2]);
-	//button->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
-	//button->addTouchEventListener(CC_CALLBACK_2(TitleScene::nextScene, this));
-	//this->addChild(button);
 
 	return true;
 }
@@ -34,12 +30,13 @@ void TitleScene::titleImageInit()
 void TitleScene::buttonInit()
 {
 	Vec2 newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.3f);
-	pStartButton = ButtonNode::create();
+	pStartButton = CreateButton::create();
 	pStartButton->init(strStartButton, CC_CALLBACK_2(TitleScene::nextScene, this), newPos);
 
-	pExitButton = ButtonNode::create();
+
+	newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.225f);
+	pExitButton = CreateButton::create();
 	pExitButton->init(strExitButton, CC_CALLBACK_2(TitleScene::exitGame, this), newPos);
-	pExitButton->alignmentVertical(pStartButton, 50.0f);
 
 	this->addChild(pStartButton);
 	this->addChild(pExitButton);
@@ -51,12 +48,5 @@ void TitleScene::nextScene(Ref* _sender, Widget::TouchEventType _type)
 }
 void TitleScene::exitGame(Ref* _sender, Widget::TouchEventType _type)
 {
-	switch (_type)
-	{
-	case ui::Widget::TouchEventType::BEGAN:
-		Director::getInstance()->end();
-		break;
-	default:
-		break;
-	}
+	Director::getInstance()->end();
 }

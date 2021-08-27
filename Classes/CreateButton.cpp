@@ -1,8 +1,8 @@
-#include "ButtonNode.h"
+#include "CreateButton.h"
 
-ButtonNode::ButtonNode() /*: button(NULL)*/ {}
+CreateButton::CreateButton() /*: button(NULL)*/ {}
 
-bool ButtonNode::init()
+bool CreateButton::init()
 {
 	if (!Button::init())
 	{
@@ -12,7 +12,7 @@ bool ButtonNode::init()
 	return true;
 }
 
-bool ButtonNode::init(string _file[], Widget::ccWidgetTouchCallback _callback, Vec2 _pos)
+bool CreateButton::init(string _file[], Widget::ccWidgetTouchCallback _callback, Vec2 _pos)
 {
 	if (!Button::init())
 	{
@@ -31,14 +31,14 @@ bool ButtonNode::init(string _file[], Widget::ccWidgetTouchCallback _callback, V
 	return true;
 }
 
-void ButtonNode::alignmentHorizontal(Button* _target, float _padding)
+void CreateButton::alignmentHorizontal(Button* _target, float _padding)
 {
 	Vec2 targetPos = _target->getPosition();
 	Vec2 newPos = Vec2(targetPos.x + _padding, targetPos.y);
 	this->setPosition(newPos);
 }
 
-void ButtonNode::alignmentVertical(Button* _target, float _padding)
+void CreateButton::alignmentVertical(Button* _target, float _padding)
 {
 	Vec2 targetPos = _target->getPosition();
 	Vec2 newPos = Vec2(targetPos.x, targetPos.y - _padding);

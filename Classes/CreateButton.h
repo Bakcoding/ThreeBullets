@@ -1,18 +1,18 @@
-#ifndef _BUTTON_NODE_H
-#define _BUTTON_NODE_H
+#ifndef _CREATE_BUTTON_H_
+#define _CREATE_BUTTON_H_
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 USING_NS_CC;
 using namespace std;
 using namespace ui;
 
-class ButtonNode : public Button
+class CreateButton : public Button
 {
 private:
 	//Button* button;
 public:
-	ButtonNode();
-	CREATE_FUNC(ButtonNode);
+	CreateButton();
+	CREATE_FUNC(CreateButton);
 	bool init();
 	bool init(string _file[], Widget::ccWidgetTouchCallback _callback, Vec2 _pos);
 

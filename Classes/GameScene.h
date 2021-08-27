@@ -1,6 +1,7 @@
 #ifndef _GAME_SCENE_H
 #define _GAME_SCENE_H
 #include "cocos2d.h"
+#include "PlayerLayer.h"
 USING_NS_CC;
 
 class GameScene : public Scene
