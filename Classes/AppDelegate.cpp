@@ -24,6 +24,7 @@
 
 #include "AppDelegate.h"
 #include "TitleScene.h"
+#include "GameScene.h"
 // #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE

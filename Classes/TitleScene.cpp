@@ -1,5 +1,4 @@
 #include "TitleScene.h"
-#include <iostream>
 
 TitleScene::TitleScene() : visibleSize(Director::getInstance()->getVisibleSize()), 
 strStartButton{ "Button/StartButtonNormal.png" ,  "Button/StartButtonSelect.png" , "Button/StartButtonSelect.png"},
@@ -29,14 +28,17 @@ void TitleScene::titleImageInit()
 
 void TitleScene::buttonInit()
 {
-	Vec2 newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.3f);
+	Vec2 startPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.3f);
 	pStartButton = CreateButton::create();
-	pStartButton->init(strStartButton, CC_CALLBACK_2(TitleScene::nextScene, this), newPos);
+	pStartButton->init(strStartButton, Widget::TextureResType::LOCAL);
+	pStartButton->addTouchEventListener(CC_CALLBACK_2(TitleScene::nextScene, this));
+	pStartButton->setPosition(startPos);
 
-
-	newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.225f);
+	Vec2 exitPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.225f);
 	pExitButton = CreateButton::create();
-	pExitButton->init(strExitButton, CC_CALLBACK_2(TitleScene::exitGame, this), newPos);
+	pExitButton->init(strExitButton, Widget::TextureResType::LOCAL);
+	pExitButton->addTouchEventListener(CC_CALLBACK_2(TitleScene::exitGame, this));
+	pExitButton->setPosition(exitPos);
 
 	this->addChild(pStartButton);
 	this->addChild(pExitButton);

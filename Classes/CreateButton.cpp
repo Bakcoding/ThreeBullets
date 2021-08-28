@@ -1,6 +1,6 @@
 #include "CreateButton.h"
 
-CreateButton::CreateButton() /*: button(NULL)*/ {}
+CreateButton::CreateButton() : fileName{""}, type(Widget::TextureResType::LOCAL) {}
 
 bool CreateButton::init()
 {
@@ -12,21 +12,26 @@ bool CreateButton::init()
 	return true;
 }
 
-bool CreateButton::init(string _file[], Widget::ccWidgetTouchCallback _callback, Vec2 _pos)
+bool CreateButton::init(const string _file[], Widget::TextureResType _type)
 {
-	if (!Button::init())
+	if (!Button::init(_file[0],	_file[1], _file[2], _type))
 	{
 		return false;
 	}
 
-	Button* button = Button::create(
-		_file[0], _file[1], _file[2]
-	);
+	fileName[0] = _file[0];
+	fileName[1] = _file[1];
+	fileName[2] = _file[2];
+	type = _type;
 
-	button->setPosition(_pos);
-	button->addTouchEventListener(_callback);
+	//Button* button = Button::create(
+	//	_file[0], _file[1], _file[2]
+	//);
 
-	this->addChild(button);
+	//button->setPosition(_pos);
+	//button->addTouchEventListener(_callback);
+
+	//this->addChild(button);
 
 	return true;
 }

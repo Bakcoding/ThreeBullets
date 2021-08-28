@@ -1,14 +1,17 @@
 #ifndef _PLAYER_LAYER_H_
 #define _PLAYER_LAYER_H_
 #include "cocos2d.h"
+#include "PlayerSprite.h"
 #include "CreateButton.h"
-USING_NS_CC;
+#include "BulletLayer.h"
 
 class PlayerLayer : public Layer
 {
 private:
-	Sprite* pPlayer;
-	string strPlayerFile;
+	Vec2 playerPos;
+	PlayerSprite* pPlayer;
+	BulletLayer* pBullet;
+	char* strPlayerFile;
 	string strLeftButtonFile[3];
 	string strRightButtonFile[3];
 	Size visibleSize;
@@ -20,9 +23,12 @@ public:
 	PlayerLayer();
 	CREATE_FUNC(PlayerLayer);
 	bool init();
-	void initPlayer();
-	void initButton();
+	bool initPlayer();
+	bool initButton();
+	bool initBullet();
 	void moveLeft(Ref* _sender, Widget::TouchEventType _type);
 	void moveRight(Ref* _sender, Widget::TouchEventType _type);
+	void update(float _dt);
+	Vec2 getPlayerPosition();
 };
 #endif
