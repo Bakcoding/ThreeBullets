@@ -26,14 +26,21 @@ bool PlayerSprite::init(const char* _fileName, Vec2 _pos)
 
 void PlayerSprite::moveLeft()
 {
-	Vec2 newPos = this->getPosition();
-	newPos -= Vec2(visibleSize.width * 0.2f, 0);
-	this->setPosition(newPos);
+	if (this->getPosition().x > visibleSize.width * 0.2f)
+	{
+		Vec2 newPos = this->getPosition();
+		newPos -= Vec2(visibleSize.width * 0.2f, 0);
+		this->setPosition(newPos);
+	}
 }
 
 void PlayerSprite::moveRight()
 {
-	Vec2 newPos = this->getPosition();
-	newPos += Vec2(visibleSize.width * 0.2f, 0);
-	this->setPosition(newPos);
+	if (this->getPosition().x < visibleSize.width * 0.8f)
+	{
+		Vec2 newPos = this->getPosition();
+		newPos += Vec2(visibleSize.width * 0.2f, 0);
+		this->setPosition(newPos);
+	}
 }
+

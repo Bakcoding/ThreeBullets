@@ -22,7 +22,7 @@ bool BulletSprite::init(EType _type, Vec2 _dir, float _speed)
 
 	moveDir = _dir;
 	moveSpeed = _speed;
-	eType = _type;
+	bulletType = _type;
 
 	this->scheduleUpdate();
 	
@@ -46,4 +46,14 @@ void BulletSprite::update(float _dt)
 	{
 		isBulletDead = true;
 	}
+}
+
+bool BulletSprite::isDead()
+{
+	return isBulletDead;
+}
+
+BulletSprite::EType BulletSprite::getBulletType()
+{
+	return this->bulletType;
 }

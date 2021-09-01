@@ -1,7 +1,7 @@
 #include "BulletLayer.h"
 
 BulletLayer::BulletLayer() :
-	bullet(NULL), xButton(NULL), cButton(NULL), sButton(NULL),
+	bullet(NULL), xButton(NULL), cButton(NULL), sButton(NULL), bulletList(NULL),
 	visibleSize(Director::getInstance()->getVisibleSize()), moveDir(Vec2(0, 1)), moveSpeed(700.0f), bulletIsDead(false), playerPos(Vec2::ZERO),
 	strXBullet{"Bullet/XBullet.png"},
 	strCBullet{"Bullet/CBullet.png"},
@@ -19,8 +19,15 @@ bool BulletLayer::init()
 	}
 
 	initButton();
+	
+	this->scheduleUpdate();
 
 	return true;
+}
+
+void BulletLayer::update(float _dt)
+{
+	bulletProcess();
 }
 
 bool BulletLayer::initButton()
@@ -46,10 +53,6 @@ bool BulletLayer::initButton()
 		return false;
 	}
 
-	// xButton->init(strXButton, Widget::TextureResType::LOCAL);
-	// cButton->init(strCButton, Widget::TextureResType::LOCAL);
-	// sButton->init(strSButton, Widget::TextureResType::LOCAL);
-
 	xButton->addTouchEventListener(CC_CALLBACK_2(BulletLayer::touchXButton, this));
 	cButton->addTouchEventListener(CC_CALLBACK_2(BulletLayer::touchCButton, this));
 	sButton->addTouchEventListener(CC_CALLBACK_2(BulletLayer::touchSButton, this));
@@ -69,6 +72,7 @@ void BulletLayer::touchXButton(Ref* _sender, Widget::TouchEventType _type)
 	{
 	case Widget::TouchEventType::BEGAN:
 		bullet = shootBullet(BulletSprite::EType::kX);
+		bulletList.pushBack(bullet);
 		this->addChild(bullet);
 		break;
 	case Widget::TouchEventType::ENDED:
@@ -77,12 +81,14 @@ void BulletLayer::touchXButton(Ref* _sender, Widget::TouchEventType _type)
 		break;
 	}
 }
+
 void BulletLayer::touchCButton(Ref* _sender, Widget::TouchEventType _type)
 {
 	switch (_type)
 	{
 	case Widget::TouchEventType::BEGAN:
 		bullet = shootBullet(BulletSprite::EType::kC);
+		bulletList.pushBack(bullet);
 		this->addChild(bullet);
 		break;
 	case Widget::TouchEventType::ENDED:
@@ -91,12 +97,14 @@ void BulletLayer::touchCButton(Ref* _sender, Widget::TouchEventType _type)
 		break;
 	}
 }
+
 void BulletLayer::touchSButton(Ref* _sender, Widget::TouchEventType _type)
 {
 	switch (_type)
 	{
 	case Widget::TouchEventType::BEGAN:
 		bullet = shootBullet(BulletSprite::EType::kS);
+		bulletList.pushBack(bullet);
 		this->addChild(bullet);
 		break;
 	case Widget::TouchEventType::ENDED:
@@ -110,7 +118,8 @@ BulletSprite* BulletLayer::shootBullet(BulletSprite::EType _type)
 {
 	bullet = BulletSprite::create();
 	bullet->init(_type, moveDir, moveSpeed);
-	bullet->setPosition(playerPos);
+	bullet->setPosition(playerPos + Vec2(0, 25.0f));
+	bullet->setScale(0.6f);
 
 	return bullet;
 }
@@ -120,4 +129,24 @@ void BulletLayer::setBulletPos(Vec2 _pos)
 	playerPos = _pos;
 }
 
+void BulletLayer::bulletProcess()
+{
+	for (int i = 0; i < bulletList.size(); i++)
+	{
+		if (bulletList.at(i)->isDead())
+		{
+			removeBullet(i);
+		}
+	}
+}
 
+void BulletLayer::removeBullet(int _idx)
+{
+	this->removeChild(bulletList.at(_idx));
+	bulletList.erase(_idx);
+}
+
+Vector<BulletSprite*> BulletLayer::getBulletList()
+{
+	return this->bulletList;
+}

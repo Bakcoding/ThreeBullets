@@ -16,13 +16,16 @@ public:
 	};
 private:
 	char* bulletFileName[EType::kLen];
-	EType eType;
+	EType bulletType;
 public:
 	BulletSprite();
 	CREATE_FUNC(BulletSprite);
 	bool init();
 	bool init(EType _type, Vec2 _dir, float _speed);
 	void update(float _dt);
+	bool isDead();
+
+	EType getBulletType();
 };
 
 #endif

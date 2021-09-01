@@ -24,15 +24,6 @@ bool CreateButton::init(const string _file[], Widget::TextureResType _type)
 	fileName[2] = _file[2];
 	type = _type;
 
-	//Button* button = Button::create(
-	//	_file[0], _file[1], _file[2]
-	//);
-
-	//button->setPosition(_pos);
-	//button->addTouchEventListener(_callback);
-
-	//this->addChild(button);
-
 	return true;
 }
 

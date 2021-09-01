@@ -16,7 +16,7 @@ private:
 	string strRightButtonFile[3];
 	Size visibleSize;
 	float interval;
-
+	Vector<BulletSprite*> bulletList;
 public:
 	enum EButton { kLeft = 0, kRight };
 public:
@@ -30,5 +30,7 @@ public:
 	void moveRight(Ref* _sender, Widget::TouchEventType _type);
 	void update(float _dt);
 	Vec2 getPlayerPosition();
+	Vector<BulletSprite*> getBulletList();
+	BulletLayer* getBulletLayer();
 };
 #endif

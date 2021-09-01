@@ -28,7 +28,7 @@ void PlayerLayer::update(float _dt)
 
 bool PlayerLayer::initPlayer()
 {
-	Vec2 newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.3f);
+	Vec2 newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.241f);
 	pPlayer = PlayerSprite::create();
 	if (pPlayer == nullptr || !pPlayer->init(strPlayerFile, Vec2::ZERO))
 	{
@@ -36,6 +36,7 @@ bool PlayerLayer::initPlayer()
 	}
 
 	pPlayer->setPosition(newPos);
+	pPlayer->setScale(0.8f);
 	playerPos = newPos;
 
 	this->addChild(pPlayer);
@@ -48,7 +49,7 @@ bool PlayerLayer::initButton()
 	Vec2 rightPos = Vec2(visibleSize.width * 0.335f, visibleSize.height * 0.0575f);
 	CreateButton* leftButton = CreateButton::create();
 	CreateButton* rightButton = CreateButton::create();
-	
+
 	if (leftButton == nullptr || !leftButton->init(strLeftButtonFile, Widget::TextureResType::LOCAL))
 	{
 		return false;
@@ -58,7 +59,7 @@ bool PlayerLayer::initButton()
 	{
 		return false;
 	}
-	
+
 	leftButton->addTouchEventListener(CC_CALLBACK_2(PlayerLayer::moveLeft, this));
 	rightButton->addTouchEventListener(CC_CALLBACK_2(PlayerLayer::moveRight, this));
 
@@ -90,11 +91,9 @@ void PlayerLayer::moveLeft(Ref* _sender, Widget::TouchEventType _type)
 	switch (_type)
 	{
 	case Widget::TouchEventType::BEGAN:
-		if (currentPos.x != firstLine.x)
-		{
-			pPlayer->moveLeft();
-			playerPos = pPlayer->getPosition();
-		}
+
+		pPlayer->moveLeft();
+		playerPos = pPlayer->getPosition();
 		break;
 	case Widget::TouchEventType::ENDED:
 		break;
@@ -111,11 +110,9 @@ void PlayerLayer::moveRight(Ref* _sender, Widget::TouchEventType _type)
 	switch (_type)
 	{
 	case Widget::TouchEventType::BEGAN:
-		if (currentPos.x != lastLine.x)
-		{
-			pPlayer->moveRight();
-			playerPos = pPlayer->getPosition();
-		}
+
+		pPlayer->moveRight();
+		playerPos = pPlayer->getPosition();
 		break;
 	case Widget::TouchEventType::ENDED:
 		break;
@@ -127,4 +124,15 @@ void PlayerLayer::moveRight(Ref* _sender, Widget::TouchEventType _type)
 Vec2 PlayerLayer::getPlayerPosition()
 {
 	return playerPos;
+}
+
+Vector<BulletSprite*> PlayerLayer::getBulletList()
+{
+	bulletList = pBullet->getBulletList();
+	return bulletList;
+}
+
+BulletLayer* PlayerLayer::getBulletLayer()
+{
+	return pBullet;
 }

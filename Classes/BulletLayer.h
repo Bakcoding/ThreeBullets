@@ -12,6 +12,9 @@ private:
 	CreateButton* sButton;
 
 	BulletSprite* bullet;
+	
+	Vector<BulletSprite*> bulletList;
+
 	Size visibleSize;
 
 	Vec2 moveDir;
@@ -30,12 +33,16 @@ public:
 	BulletLayer();
 	CREATE_FUNC(BulletLayer);
 	bool init();
+	void update(float _dt);
 	bool initButton();
 	void setBulletPos(Vec2 _pos);
 	void touchXButton(Ref* _sender, Widget::TouchEventType _type);
 	void touchCButton(Ref* _sender, Widget::TouchEventType _type);
 	void touchSButton(Ref* _sender, Widget::TouchEventType _type);
+	void bulletProcess();
+	void removeBullet(int _idx);
 
 	BulletSprite* shootBullet(BulletSprite::EType _type);
+	Vector<BulletSprite*> getBulletList();
 };
 #endif
