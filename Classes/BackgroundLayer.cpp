@@ -1,31 +1,32 @@
-#include "BackgroundSprite.h"
+#include "BackgroundLayer.h"
 
-BackgroundSprite::BackgroundSprite() :
-	backgroundImage{ NULL }, imgScrollSpeed(1000.0f), imgHeight(0),
+BackgroundLayer::BackgroundLayer() :
+	backgroundImage{ NULL }, imgScrollSpeed(1000.0f), imgHeight(0), life(0), score(0), lifeLabel(NULL), scoreLabel(NULL),
 	visibleSize(Director::getInstance()->getVisibleSize()) {}
 
-bool BackgroundSprite::init()
+bool BackgroundLayer::init()
 {
-	if (!Sprite::init())
+	if (!Layer::init())
 	{
 		return false;
 	}
 
 	drawEndLine();
 	initBackground();
-	
+	initLabel();
 	this->scheduleUpdate();
 
 	return true;
 }
 
-void BackgroundSprite::update(float _dt)
+void BackgroundLayer::update(float _dt)
 {
 	scrollBackground(_dt);
 	repositionImage();
+	setLabelString(life, score);
 }
 
-void BackgroundSprite::initBackground()
+void BackgroundLayer::initBackground()
 {
 	for (int imgCount = 0; imgCount < ECount::kImage; ++imgCount)
 	{
@@ -33,11 +34,11 @@ void BackgroundSprite::initBackground()
 		imgHeight = backgroundImage[imgCount]->getContentSize().height * backgroundImage[imgCount]->getScale();
 		backgroundImage[imgCount]->setAnchorPoint(Vec2::ZERO);
 		backgroundImage[imgCount]->setPosition(Vec2(0.0f, imgCount * imgHeight));
-		this->addChild(backgroundImage[imgCount]);
+		this->addChild(backgroundImage[imgCount], 3);
 	}
 }
 
-void BackgroundSprite::scrollBackground(float _dt)
+void BackgroundLayer::scrollBackground(float _dt)
 {
 	for (int imgCount = 0; imgCount < ECount::kImage; ++imgCount)
 	{
@@ -47,7 +48,7 @@ void BackgroundSprite::scrollBackground(float _dt)
 	}
 }
 
-int BackgroundSprite::getImageLastIndex()
+int BackgroundLayer::getImageLastIndex()
 {
 	int lastIdx = 0;
 	for (int imgCount = 0; imgCount < ECount::kImage; imgCount++)
@@ -61,7 +62,7 @@ int BackgroundSprite::getImageLastIndex()
 	return lastIdx;
 }
 
-void BackgroundSprite::repositionImage()
+void BackgroundLayer::repositionImage()
 {
 	for (int imgCount = 0; imgCount < ECount::kImage; imgCount++)
 	{
@@ -77,7 +78,7 @@ void BackgroundSprite::repositionImage()
 	}
 }
 
-void BackgroundSprite::drawEndLine()
+void BackgroundLayer::drawEndLine()
 {
 	Vec2 originPoint = Vec2(0, visibleSize.height * 0.21f);
 	Vec2 destPoint = Vec2(visibleSize.width, visibleSize.height * 0.21f);
@@ -85,4 +86,36 @@ void BackgroundSprite::drawEndLine()
 	endLine->drawLine(originPoint, destPoint, Color4F::RED);
 	endLine->setLineWidth(0.5f);
 	this->addChild(endLine);
+}
+
+void BackgroundLayer::initLabel()
+{
+	Size winSize = Director::getInstance()->getWinSize();
+	float factorX = winSize.width / 360.0f;
+	float factorY = winSize.height / 740.0f;
+
+	lifeLabel = Label::createWithTTF("0", "fonts/arial.ttf", 20);
+	lifeLabel->setAnchorPoint(Vec2::ZERO);
+	lifeLabel->setPosition(visibleSize.width * 0.01f, visibleSize.height * 0.18f);
+	lifeLabel->setTextColor(Color4B::WHITE);
+	lifeLabel->setScaleX(factorX);
+	lifeLabel->setScaleY(factorY);
+
+	scoreLabel = Label::createWithTTF("000000", "fonts/Marker Felt.ttf", 40);
+	scoreLabel->setPosition(visibleSize.width * 0.5f, visibleSize.height * 0.65f);
+	scoreLabel->setTextColor(Color4B(255, 255, 255, 50));
+	scoreLabel->setScaleX(factorX);
+	scoreLabel->setScaleY(factorY);
+
+	this->addChild(lifeLabel, 2);
+	this->addChild(scoreLabel, 1);
+}
+
+void BackgroundLayer::setLabelString(int _life, int _score)
+{
+	string strLife = StringUtils::format("LIFE : %d", _life);
+	lifeLabel->setString(strLife);
+
+	string strScore = StringUtils::format("%d", _score);
+	scoreLabel->setString(strScore);
 }

@@ -1,19 +1,24 @@
-#ifndef _BACKGROUND_SPRITE_H_
-#define _BACKGROUND_SPRITE_H_
+#ifndef _BACKGROUND_LAYER_H_
+#define _BACKGROUND_LAYER_H_
 #include "cocos2d.h"
 USING_NS_CC;
+using namespace std;
 
-class BackgroundSprite : public Sprite
+class BackgroundLayer : public Layer
 {
 private:
 	Size visibleSize;
 	enum ECount {kImage = 2};
 	Sprite* backgroundImage[ECount::kImage];
+	Label* lifeLabel;
+	Label* scoreLabel;
 	float imgScrollSpeed;
 	float imgHeight;
+	int life;
+	int score;
 public:
-	BackgroundSprite();
-	CREATE_FUNC(BackgroundSprite);
+	BackgroundLayer();
+	CREATE_FUNC(BackgroundLayer);
 	virtual bool init() override;
 	void update(float _dt);
 	void initBackground();
@@ -21,5 +26,7 @@ public:
 	void drawEndLine();
 	int getImageLastIndex();
 	void repositionImage();
+	void initLabel();
+	void setLabelString(int _life, int _score);
 };
 #endif

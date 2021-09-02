@@ -21,7 +21,7 @@ bool EnemyLayer::init()
 
 void EnemyLayer::update(float _dt)
 {
-	enemyProcess();
+	// enemyProcess();
 }
 
 bool EnemyLayer::initEnemy()

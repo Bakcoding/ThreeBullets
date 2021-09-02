@@ -1,5 +1,9 @@
 #include "GameScene.h"
 
+GameScene::GameScene() : 
+	pPlayer(NULL), pEnemy(NULL), pBullet(NULL), pBGLayer(NULL), bulletList(NULL), enemyList(NULL), bulletBox(Rect::ZERO), enemyBox(Rect::ZERO),
+	life(3), point(10), score(0), enemyPoint(10), isGameover(false) {}
+
 bool GameScene::init()
 {
 	if (!Scene::init())
@@ -7,31 +11,36 @@ bool GameScene::init()
 		return false;
 	}
 
-	BackgroundSprite* bgSprite = BackgroundSprite::create();
-	this->addChild(bgSprite);
+	pBGLayer = BackgroundLayer::create();
+	this->addChild(pBGLayer, 1);
 
 	pPlayer = PlayerLayer::create();
-	this->addChild(pPlayer);
+	this->addChild(pPlayer, 3);
 
 	pEnemy = EnemyLayer::create();
-	this->addChild(pEnemy);
+	this->addChild(pEnemy, 2);
 
-	pBulletLayer = pPlayer->getBulletLayer();
+	pBullet = pPlayer->getBulletLayer();
+	ScoreManager::setTotalScore(0);
+
 	this->scheduleUpdate();
-
-
 
 	return true;
 }
 
 void GameScene::update(float _dt)
 {
-	collisionProcess();
+	if (!isGameover)
+	{
+		collisionProcess();
+		setLabelValue();
+		enemyProcess();
+	}
 }
 
 void GameScene::collisionProcess()
 {
-	bulletList = pBulletLayer->getBulletList();
+	bulletList = pBullet->getBulletList();
 	enemyList = pEnemy->getEnemyList();
 
 	if (bulletList.empty() || enemyList.empty())
@@ -60,16 +69,18 @@ void GameScene::matchResult(int _val, int _eCount, int _bCount)
 {
 	if (_val == EType::kDraw)
 	{
-		pBulletLayer->removeBullet(_bCount);
+		pBullet->removeBullet(_bCount);
 	}
 	else if (_val == EType::kLose)
 	{
-		pBulletLayer->removeBullet(_bCount);
+		loseLife();
+		pBullet->removeBullet(_bCount);
 	}
 	else if (_val == EType::kWin)
 	{
+		addScore(point);
 		pEnemy->removeEnemy(_eCount);
-		pBulletLayer->removeBullet(_bCount);
+		pBullet->removeBullet(_bCount);
 	}
 	else
 	{
@@ -159,5 +170,48 @@ int GameScene::compareType(EnemySprite* _enemy, BulletSprite* _bullet)
 			// error
 			return 3;
 		}
+	}
+}
+
+void GameScene::setLabelValue()
+{
+	pBGLayer->setLabelString(life, score);
+}
+
+void GameScene::addScore(int _score)
+{
+	ScoreManager::addTotalScore(_score);
+	score = ScoreManager::getTotalScore();
+}
+
+void GameScene::loseLife()
+{
+	life--;
+	if (life <= 0)
+	{
+		isGameover = true;
+		gameOver();
+		return;
+	}
+
+}
+
+void GameScene::enemyProcess()
+{
+	for (int enemyCount = 0; enemyCount < enemyList.size(); enemyCount++)
+	{
+		if (enemyList.at(enemyCount)->isDead())
+		{
+			loseLife();
+			pEnemy->removeEnemy(enemyCount);
+		}
+	}
+}
+
+void GameScene::gameOver()
+{
+	if (isGameover)
+	{
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, GameoverScene::create()));
 	}
 }

@@ -57,7 +57,7 @@ void EnemySprite::enemyDeadline(float _dt)
 
 bool EnemySprite::isDead()
 {
-	return isEnemyDead;
+	return this->isEnemyDead;
 }
 
 EnemySprite::EType EnemySprite::getEnemyType()
