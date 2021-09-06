@@ -21,7 +21,7 @@ public:
 	EnemyLayer();
 	CREATE_FUNC(EnemyLayer);
 	virtual bool init() override;
-	void update(float _dt);
+	void update(float _dt) override;
 	bool initEnemy();
 	void enemySpawn(float _dt);
 	void setEnemyType();

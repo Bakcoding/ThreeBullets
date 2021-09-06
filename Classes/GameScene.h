@@ -6,17 +6,19 @@
 #include "BackgroundLayer.h"
 #include "GameoverScene.h"
 #include "ScoreManager.h"
+#include "EffectSprite.h"
 USING_NS_CC;
 
 class GameScene : public Scene
 {
 public:
-	enum EType {kDraw, kWin, kLose, kError};
+	enum EType {kDraw, kWin, kLose};
 
 private:
 	PlayerLayer* pPlayer;
 	EnemyLayer* pEnemy;
 	BulletLayer* pBullet;
+	EffectSprite* pEffect;
 	Vector<BulletSprite*> bulletList;
 	Vector<EnemySprite*> enemyList;
 	Rect bulletBox;
@@ -32,7 +34,7 @@ public:
 	GameScene();
 	CREATE_FUNC(GameScene);
 	virtual bool init() override;
-	void update(float _dt);
+	void update(float _dt) override;
 	void collisionProcess();
 	void matchResult(int _val, int _eCount, int _bCount);
 	int compareType(EnemySprite* _enemy, BulletSprite* _bullet);

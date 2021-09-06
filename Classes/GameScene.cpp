@@ -1,7 +1,7 @@
 #include "GameScene.h"
 
 GameScene::GameScene() : 
-	pPlayer(NULL), pEnemy(NULL), pBullet(NULL), pBGLayer(NULL), bulletList(NULL), enemyList(NULL), bulletBox(Rect::ZERO), enemyBox(Rect::ZERO),
+	pPlayer(NULL), pEnemy(NULL), pBullet(NULL), pBGLayer(NULL), pEffect(NULL), bulletList(NULL), enemyList(NULL), bulletBox(Rect::ZERO), enemyBox(Rect::ZERO),
 	life(3), point(10), score(0), enemyPoint(10), isGameover(false) {}
 
 bool GameScene::init()
@@ -11,11 +11,15 @@ bool GameScene::init()
 		return false;
 	}
 
+	pPlayer = PlayerLayer::create();
+	this->addChild(pPlayer, 3);
+
 	pBGLayer = BackgroundLayer::create();
 	this->addChild(pBGLayer, 1);
 
-	pPlayer = PlayerLayer::create();
-	this->addChild(pPlayer, 3);
+	pEffect = EffectSprite::create();
+	this->addChild(pEffect, 0);
+
 
 	pEnemy = EnemyLayer::create();
 	this->addChild(pEnemy, 2);
@@ -82,11 +86,6 @@ void GameScene::matchResult(int _val, int _eCount, int _bCount)
 		pEnemy->removeEnemy(_eCount);
 		pBullet->removeBullet(_bCount);
 	}
-	else
-	{
-		CCLOG("Error");
-		return;
-	}
 }
 
 int GameScene::compareType(EnemySprite* _enemy, BulletSprite* _bullet)
@@ -110,12 +109,6 @@ int GameScene::compareType(EnemySprite* _enemy, BulletSprite* _bullet)
 			// lose
 			return 2;
 		}
-		
-		else
-		{
-			// error
-			return 3;
-		}
 	}
 
 	if (_enemy->getEnemyType() == EnemySprite::EType::kCEnemy)
@@ -136,12 +129,6 @@ int GameScene::compareType(EnemySprite* _enemy, BulletSprite* _bullet)
 		{
 			// lose
 			return 2;
-		}
-
-		else
-		{
-			// error
-			return 3;
 		}
 	}
 
@@ -164,13 +151,9 @@ int GameScene::compareType(EnemySprite* _enemy, BulletSprite* _bullet)
 			// lose
 			return 2;
 		}
-
-		else
-		{
-			// error
-			return 3;
-		}
 	}
+	
+	return 3;
 }
 
 void GameScene::setLabelValue()
@@ -187,11 +170,12 @@ void GameScene::addScore(int _score)
 void GameScene::loseLife()
 {
 	life--;
+	pEffect->setIsHit(true);
+
 	if (life <= 0)
 	{
 		isGameover = true;
 		gameOver();
-		return;
 	}
 
 }
@@ -203,6 +187,7 @@ void GameScene::enemyProcess()
 		if (enemyList.at(enemyCount)->isDead())
 		{
 			loseLife();
+			enemyList.at(enemyCount)->setEnemyDead(false);
 			pEnemy->removeEnemy(enemyCount);
 		}
 	}

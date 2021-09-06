@@ -33,18 +33,17 @@ bool EnemySprite::init(EType _type, float _speed, Vec2 _dir)
 
 void EnemySprite::update(float _dt)
 {
-	enemyDeadline(_dt);
+	enemyMove(_dt);
 }
 
-void EnemySprite::enemyDeadline(float _dt)
+void EnemySprite::enemyMove(float _dt)
 {
 	if (isEnemyDead)
 	{
 		return;
 	}
 
-	Vec2 enemyPos = this->getPosition();
-	Vec2 newPos = enemyPos;
+	Vec2 newPos = this->getPosition();
 	
 	newPos += moveSpeed * moveDir * _dt;
 	this->setPosition(newPos);
@@ -60,7 +59,18 @@ bool EnemySprite::isDead()
 	return this->isEnemyDead;
 }
 
+void EnemySprite::setEnemyDead(bool _bool)
+{
+	this->isEnemyDead = _bool;
+}
+
 EnemySprite::EType EnemySprite::getEnemyType()
 {
 	return this->enemyType;
+}
+
+void EnemySprite::enemyAction()
+{
+	Action* rotate = RotateBy::create(3.0f, 500.0f);
+	this->runAction(rotate);
 }

@@ -19,9 +19,11 @@ public:
 	CREATE_FUNC(EnemySprite);
 	virtual bool init() override;
 	bool init(EType _type, float _speed, Vec2 _dir);
-	void update(float _dt);
-	void enemyDeadline(float _dt);
+	void update(float _dt) override;
+	void enemyMove(float _dt);
 	bool isDead();
 	EType getEnemyType();
+	void enemyAction();
+	void setEnemyDead(bool _bool);
 };
 #endif

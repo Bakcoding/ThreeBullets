@@ -15,7 +15,6 @@ bool TitleScene::init()
 	titleImageInit();
 	buttonInit();
 
-
 	return true;
 }
 

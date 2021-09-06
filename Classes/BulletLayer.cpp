@@ -64,6 +64,8 @@ bool BulletLayer::initButton()
 	this->addChild(xButton);
 	this->addChild(cButton);
 	this->addChild(sButton);
+
+	return true;
 }
 
 void BulletLayer::touchXButton(Ref* _sender, Widget::TouchEventType _type)

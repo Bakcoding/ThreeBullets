@@ -30,7 +30,7 @@ bool PlayerLayer::initPlayer()
 {
 	Vec2 newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.241f);
 	pPlayer = PlayerSprite::create();
-	if (pPlayer == nullptr || !pPlayer->init(strPlayerFile, Vec2::ZERO))
+	if (pPlayer == NULL || !pPlayer->init(strPlayerFile, Vec2::ZERO))
 	{
 		return false;
 	}
@@ -41,6 +41,7 @@ bool PlayerLayer::initPlayer()
 
 	this->addChild(pPlayer);
 
+	return true;
 }
 
 bool PlayerLayer::initButton()
@@ -50,12 +51,12 @@ bool PlayerLayer::initButton()
 	CreateButton* leftButton = CreateButton::create();
 	CreateButton* rightButton = CreateButton::create();
 
-	if (leftButton == nullptr || !leftButton->init(strLeftButtonFile, Widget::TextureResType::LOCAL))
+	if (leftButton == NULL || !leftButton->init(strLeftButtonFile, Widget::TextureResType::LOCAL))
 	{
 		return false;
 	}
 
-	if (rightButton == nullptr || !rightButton->init(strRightButtonFile, Widget::TextureResType::LOCAL))
+	if (rightButton == NULL || !rightButton->init(strRightButtonFile, Widget::TextureResType::LOCAL))
 	{
 		return false;
 	}
@@ -68,18 +69,22 @@ bool PlayerLayer::initButton()
 
 	this->addChild(leftButton);
 	this->addChild(rightButton);
+
+	return true;
 }
 
 bool PlayerLayer::initBullet()
 {
 	pBullet = BulletLayer::create();
 
-	if (pBullet == nullptr || !Layer::init())
+	if (pBullet == NULL || !Layer::init())
 	{
 		return false;
 	}
 
 	this->addChild(pBullet);
+
+	return true;
 }
 
 

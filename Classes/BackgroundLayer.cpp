@@ -12,6 +12,7 @@ bool BackgroundLayer::init()
 	}
 
 	drawEndLine();
+	initCountTable();
 	initBackground();
 	initLabel();
 	this->scheduleUpdate();
@@ -78,6 +79,15 @@ void BackgroundLayer::repositionImage()
 	}
 }
 
+void BackgroundLayer::initCountTable()
+{
+	Sprite* countTable = Sprite::create("Background/CountImage.png");
+	countTable->setPosition(visibleSize.width * 0.5f, visibleSize.height * 0.65f);
+	countTable->setOpacity(50);
+	countTable->setScale(1.5f);
+	this->addChild(countTable);
+}
+
 void BackgroundLayer::drawEndLine()
 {
 	Vec2 originPoint = Vec2(0, visibleSize.height * 0.21f);
@@ -103,7 +113,7 @@ void BackgroundLayer::initLabel()
 
 	scoreLabel = Label::createWithTTF("000000", "fonts/Marker Felt.ttf", 40);
 	scoreLabel->setPosition(visibleSize.width * 0.5f, visibleSize.height * 0.65f);
-	scoreLabel->setTextColor(Color4B(255, 255, 255, 50));
+	scoreLabel->setTextColor(Color4B(255, 255, 255, 80));
 	scoreLabel->setScaleX(factorX);
 	scoreLabel->setScaleY(factorY);
 

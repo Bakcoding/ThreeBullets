@@ -20,10 +20,11 @@ public:
 	BackgroundLayer();
 	CREATE_FUNC(BackgroundLayer);
 	virtual bool init() override;
-	void update(float _dt);
+	void update(float _dt) override;
 	void initBackground();
 	void scrollBackground(float _dt);
 	void drawEndLine();
+	void initCountTable();
 	int getImageLastIndex();
 	void repositionImage();
 	void initLabel();
