@@ -11,6 +11,7 @@ BulletLayer::BulletLayer() :
 	strCButton{ "Button/CButtonNormal.png", "Button/CButtonSelect.png", "Button/CButtonSelect.png" },
 	strSButton{ "Button/SButtonNormal.png", "Button/SButtonSelect.png", "Button/SButtonSelect.png" } {}
 
+// 총알 생성 트리거 클래스
 bool BulletLayer::init()
 {
 	if (!Layer::init())
@@ -30,6 +31,8 @@ void BulletLayer::update(float _dt)
 	bulletProcess();
 }
 
+// CreateButton 클래스 사용 버튼생성
+// 3가지 총알, 3가지 버튼, X S C
 bool BulletLayer::initButton()
 {
 	Vec2 xPos = Vec2(visibleSize.width * 0.6225f, visibleSize.height * 0.0575f);
@@ -68,6 +71,7 @@ bool BulletLayer::initButton()
 	return true;
 }
 
+// X버튼 눌렀을 때 X총알 발사
 void BulletLayer::touchXButton(Ref* _sender, Widget::TouchEventType _type)
 {
 	switch(_type)
@@ -84,6 +88,7 @@ void BulletLayer::touchXButton(Ref* _sender, Widget::TouchEventType _type)
 	}
 }
 
+// C
 void BulletLayer::touchCButton(Ref* _sender, Widget::TouchEventType _type)
 {
 	switch (_type)
@@ -100,6 +105,7 @@ void BulletLayer::touchCButton(Ref* _sender, Widget::TouchEventType _type)
 	}
 }
 
+// S
 void BulletLayer::touchSButton(Ref* _sender, Widget::TouchEventType _type)
 {
 	switch (_type)
@@ -116,6 +122,8 @@ void BulletLayer::touchSButton(Ref* _sender, Widget::TouchEventType _type)
 	}
 }
 
+// 총알 발사
+// 총알 초기화, 생성 
 BulletSprite* BulletLayer::shootBullet(BulletSprite::EType _type)
 {
 	bullet = BulletSprite::create();
@@ -126,11 +134,13 @@ BulletSprite* BulletLayer::shootBullet(BulletSprite::EType _type)
 	return bullet;
 }
 
+// 총알 위치 = 플레이어 위치
 void BulletLayer::setBulletPos(Vec2 _pos)
 {
 	playerPos = _pos;
 }
 
+// 죽은 총알 찾아서 리스트에서 제거
 void BulletLayer::bulletProcess()
 {
 	for (int i = 0; i < bulletList.size(); i++)
@@ -142,6 +152,7 @@ void BulletLayer::bulletProcess()
 	}
 }
 
+// 총알을 리스트에서 제거
 void BulletLayer::removeBullet(int _idx)
 {
 	this->removeChild(bulletList.at(_idx));

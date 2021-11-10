@@ -5,6 +5,7 @@ strLeftButtonFile{ "Button/LeftButtonNormal.png", "Button/LeftButtonSelect.png",
 strRightButtonFile{ "Button/RightButtonNormal.png", "Button/RightButtonSelect.png", "Button/RightButtonSelect.png" },
 visibleSize(Director::getInstance()->getVisibleSize()), interval(visibleSize.width * 0.2f) {}
 
+// 플레이어 생성
 bool PlayerLayer::init()
 {
 	if (!Layer::init())
@@ -21,11 +22,14 @@ bool PlayerLayer::init()
 	return true;
 }
 
+// 총알 정보 업데이트
+// 플레이어 위치에서 총알이 생성된다.  
 void PlayerLayer::update(float _dt)
 {
 	pBullet->setBulletPos(playerPos);
 }
 
+// PlayerSprite 초기화 함수 호출, 플레이어 초기화, 생성
 bool PlayerLayer::initPlayer()
 {
 	Vec2 newPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.241f);
@@ -44,6 +48,8 @@ bool PlayerLayer::initPlayer()
 	return true;
 }
 
+// CreateButton 클래스 사용한 버튼 생성
+// 플레이어 좌우 이동 버튼
 bool PlayerLayer::initButton()
 {
 	Vec2 leftPos = Vec2(visibleSize.width * 0.1225f, visibleSize.height * 0.0575f);
@@ -61,7 +67,9 @@ bool PlayerLayer::initButton()
 		return false;
 	}
 
+	// 좌로 이동하는 버튼
 	leftButton->addTouchEventListener(CC_CALLBACK_2(PlayerLayer::moveLeft, this));
+	// 우로 이동하는 버튼
 	rightButton->addTouchEventListener(CC_CALLBACK_2(PlayerLayer::moveRight, this));
 
 	leftButton->setPosition(leftPos);
@@ -73,6 +81,7 @@ bool PlayerLayer::initButton()
 	return true;
 }
 
+// 총알 생성
 bool PlayerLayer::initBullet()
 {
 	pBullet = BulletLayer::create();
@@ -87,7 +96,8 @@ bool PlayerLayer::initBullet()
 	return true;
 }
 
-
+// 버튼 입력 처리 콜백 함수
+// 왼쪽
 void PlayerLayer::moveLeft(Ref* _sender, Widget::TouchEventType _type)
 {
 	Vec2 currentPos = pPlayer->getPosition();
@@ -106,7 +116,7 @@ void PlayerLayer::moveLeft(Ref* _sender, Widget::TouchEventType _type)
 		break;
 	}
 }
-
+// 오른쪽 
 void PlayerLayer::moveRight(Ref* _sender, Widget::TouchEventType _type)
 {
 	Vec2 currentPos = pPlayer->getPosition();
@@ -126,17 +136,20 @@ void PlayerLayer::moveRight(Ref* _sender, Widget::TouchEventType _type)
 	}
 }
 
+// 플레이어 위치 반환
 Vec2 PlayerLayer::getPlayerPosition()
 {
 	return playerPos;
 }
 
+// 총알이 저장된 리스트 반환
 Vector<BulletSprite*> PlayerLayer::getBulletList()
 {
 	bulletList = pBullet->getBulletList();
 	return bulletList;
 }
 
+// 총알 객체를 반환
 BulletLayer* PlayerLayer::getBulletLayer()
 {
 	return pBullet;

@@ -12,6 +12,7 @@ bool PlayerSprite::init()
 	return true;
 }
 
+// 플레이어 초기화
 bool PlayerSprite::init(const char* _fileName, Vec2 _pos)
 {
 	if (!Sprite::initWithFile(_fileName))
@@ -24,6 +25,8 @@ bool PlayerSprite::init(const char* _fileName, Vec2 _pos)
 	return true;
 }
 
+// 플레이어 움직임 함수
+// 왼쪽으로 이동
 void PlayerSprite::moveLeft()
 {
 	if (this->getPosition().x > visibleSize.width * 0.2f)
@@ -33,7 +36,7 @@ void PlayerSprite::moveLeft()
 		this->setPosition(newPos);
 	}
 }
-
+// 오른쪽으로 이동
 void PlayerSprite::moveRight()
 {
 	if (this->getPosition().x < visibleSize.width * 0.8f)

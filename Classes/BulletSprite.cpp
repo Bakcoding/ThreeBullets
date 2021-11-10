@@ -13,6 +13,7 @@ bool BulletSprite::init()
 	return true;
 }
 
+// 총알 초기화, 생성
 bool BulletSprite::init(EType _type, Vec2 _dir, float _speed)
 {
 	if (!Sprite::initWithFile(bulletFileName[_type]))
@@ -29,6 +30,7 @@ bool BulletSprite::init(EType _type, Vec2 _dir, float _speed)
 	return true;
 }
 
+// 총알 위치 갱신, 생성되면 위로 이동
 void BulletSprite::update(float _dt)
 {
 	if (isBulletDead)
@@ -48,11 +50,13 @@ void BulletSprite::update(float _dt)
 	}
 }
 
+// 총알 생명주기 체크, 화면 밖으로나가거나 적과 충돌시
 bool BulletSprite::isDead()
 {
 	return isBulletDead;
 }
 
+// 총알의 종류 반환
 BulletSprite::EType BulletSprite::getBulletType()
 {
 	return this->bulletType;
